@@ -74,7 +74,7 @@ MARKDOWNIFY_WHITELIST_TAGS = [
 
 ## Credits
 
-This filter is a slightly richer and packaged version of the snippet: [using-markdown-django-17 blog](http://www.jw.pe/blog/post/using-markdown-django-17/).
+This filter is a slightly richer and packaged version of the snippet: [using-markdown-django-17](http://www.jw.pe/blog/post/using-markdown-django-17/).
 
 ## Remarks
 
