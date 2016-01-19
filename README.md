@@ -47,6 +47,12 @@ or add the following to your requirements.txt
 django-markdownify
 ```
 
+Add app to installed apps in `settings.py`:
+
+```python
+'markdownify',
+```
+
 And add whitelisted tags to your `settings.py` file:
 
 ```
