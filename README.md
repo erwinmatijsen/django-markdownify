@@ -69,3 +69,8 @@ MARKDOWNIFY_WHITELIST_TAGS = [
 ## Credits
 
 This filter is a slightly richer and packaged version of the snippet: [using-markdown-django-17 blog](http://www.jw.pe/blog/post/using-markdown-django-17/).
+
+## Remarks
+
+Please open a PR or create a ticket if you have something to add.
+Especially if you are able to set dependency version limits.
