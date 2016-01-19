@@ -16,6 +16,7 @@ setup(
     long_description=README,
     url='https://github.com/RRMoelker/django-markdownify',
     author='R Moelker',
+    author_email='r@m.com',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
