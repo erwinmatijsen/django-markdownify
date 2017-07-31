@@ -12,6 +12,8 @@ def markdownify(text):
     html = markdown.markdown(text, safe_mode=getattr(settings, 'MARKDOWNIFY_SAFEMODE', 'escape'))
     if getattr(settings, 'MARKDOWNIFY_BLEACH', True):
         html = bleach.clean(html,
-                            tags=settings.MARKDOWNIFY_WHITELIST_TAGS, )
+                            tags=settings.MARKDOWNIFY_WHITELIST_TAGS,
+                            attributes=settings.MARKDOWNIFY_WHITELIST_ATTRS, )
         html = bleach.linkify(html)
+
     return html
