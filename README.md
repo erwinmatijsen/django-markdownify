@@ -72,6 +72,20 @@ MARKDOWNIFY_WHITELIST_TAGS = [
 ]
 ```
 
+Bleach is used to sanitize potentially dangerous HTML however it can be disabled as follows:
+
+```
+MARKDOWNIFY_BLEACH = False
+```
+
+Control markdown safe mode:
+
+```
+MARKDOWNIFY_SAFEMODE = False
+```
+
+Safe mode can be one of `"remove"`, `"replace"` or `"escape"` or `False` to disable safe mode.
+
 ## Credits
 
 This filter is a slightly richer and packaged version of the snippet: [using-markdown-django-17](http://www.jw.pe/blog/post/using-markdown-django-17/).
