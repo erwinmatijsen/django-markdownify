@@ -3,7 +3,7 @@
 Template filter to convert Markdown to HTML in Django.
 Markdown is converted to HTML and sanitized.
 
-Replacement for the deprecated: [django-markup-deprecated](https://pypi.python.org/pypi/django-markup-deprecated).
+Replacement for the deprecated: [django-markup-deprecated](https://pypi.python.org/pypi/django-markup-deprecated).  It depends on [markdown](https://pypi.python.org/pypi/Markdown) and [bleach](https://pypi.python.org/pypi/bleach).
 
 ## Usage
 
@@ -53,7 +53,12 @@ Add app to installed apps in `settings.py`:
 'markdownify',
 ```
 
-And add whitelisted tags to your `settings.py` file:
+## Options
+There are some optinal settings you can add to your `settings.py`.
+
+#### Whitelist tags
+Add whitelisted tags with `MARKDOWNIFY_WHITELIST_TAGS = []`  
+For example:
 
 ```
 MARKDOWNIFY_WHITELIST_TAGS = [
@@ -70,15 +75,28 @@ MARKDOWNIFY_WHITELIST_TAGS = [
     'strong',
     'ul'
 ]
-```
+```  
+`MARKDOWNIFY_WHITELIST_TAGS` defaults to [bleach.sanitizer.ALLOWED_TAGS](https://bleach.readthedocs.io/en/latest/clean.html#allowed-tags-tags)
 
-And if you use iamges, allow the `src` attribute:
-
-```
+#### Whitelist attributes
+Add whitelisted attributes with `MARKDOWNIFY_WHITELIST_ATTRS = []`  
+For example:
+```python
 MARKDOWNIFY_WHITELIST_ATTRS = [
+    'href',
     'src',
+    'alt',
 ]
 ```
+`MARKDOWNIFY_WHITELIST_ATTRS` defaults to [bleach.sanitizer.ALLOWED_ATTRIBUTES](https://bleach.readthedocs.io/en/latest/clean.html#allowed-attributes-attributes)
+
+#### Strip markup
+Choose if you want to strip or escape tags that aren't allowed.  
+`MARKDOWNIFY_STRIP = True` (default) strips the tags.
+`MARKDOWNIFY_STRIP = False` escapes them.
+
+#### Disable sanitazion (bleach)
+If you just want to markdownify your text, not sanitize it, set `MARKDOWNIFY_BLEACH = False`. Defaults to `True`.
 
 ## Credits
 
