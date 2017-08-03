@@ -72,6 +72,14 @@ MARKDOWNIFY_WHITELIST_TAGS = [
 ]
 ```
 
+And if you use iamges, allow the `src` attribute:
+
+```
+MARKDOWNIFY_WHITELIST_ATTRS = [
+    'src',
+]
+```
+
 ## Credits
 
 This filter is a slightly richer and packaged version of the snippet: [using-markdown-django-17](http://www.jw.pe/blog/post/using-markdown-django-17/).
