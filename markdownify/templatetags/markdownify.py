@@ -2,6 +2,7 @@ from django import template
 from django.conf import settings
 import markdown
 import bleach
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -25,4 +26,4 @@ def markdownify(text):
                             strip=strip, )
         html = bleach.linkify(html)
 
-    return html
+    return mark_safe(html)
