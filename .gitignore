@@ -1,7 +1,7 @@
 *.pyc
-*.egg-info
 
 # Ignore Pypi stuff
 dist
 README.rst
 setup.cfg
+*.egg-info

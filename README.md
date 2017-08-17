@@ -16,14 +16,14 @@ Load the tag inside your template:
 Then you can change markdown to html as follows:
 
 ```
-{{ model|markdownify|safe }}
+{{ model|markdownify }}
 ```
 
 ## Example
 
 ```
 {% load markdownify %}
-{{'Some *test* [link](#)'|markdownify|safe }}
+{{'Some *test* [link](#)'|markdownify }}
 ```
 
 Is transformed to:
