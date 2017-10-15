@@ -8,14 +8,14 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-markdownify',
-    version='0.2.1',
+    version='0.2.2',
     packages=['markdownify'],
     include_package_data=True,
     license='MIT',
     description='Markdown template filter for Django.',
     long_description=README,
     url='https://github.com/RRMoelker/django-markdownify',
-    download_url='https://github.com/RRMoelker/django-markdownify/archive/0.2.0.tar.gz',
+    download_url='https://github.com/RRMoelker/django-markdownify/archive/0.2.2.tar.gz',
     author='R Moelker, Erwin Matijsen',
     author_email='erwin@evosites.nl',
     classifiers=[

@@ -54,7 +54,7 @@ Add app to installed apps in `settings.py`:
 ```
 
 ## Options
-There are some optinal settings you can add to your `settings.py`.
+There are some optional settings you can add to your `settings.py`.
 
 #### Whitelist tags
 Add whitelisted tags with `MARKDOWNIFY_WHITELIST_TAGS = []`  
@@ -89,6 +89,17 @@ MARKDOWNIFY_WHITELIST_ATTRS = [
 ]
 ```
 `MARKDOWNIFY_WHITELIST_ATTRS` defaults to [bleach.sanitizer.ALLOWED_ATTRIBUTES](https://bleach.readthedocs.io/en/latest/clean.html#allowed-attributes-attributes)
+
+#### Enable Markdown extensions
+[Markdown](https://pypi.python.org/pypi/Markdown) is extensible with extensions. To enable one or more extensions, add `MARKDOWNIFY_MARKDOWN_EXTENSIONS` to your `settings.py`
+For example:
+```python
+MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code',
+                                   'markdown.extensions.extra', ]
+```
+`MARKDOWNIFY_MARKDOWN_EXTENSIONS` defaults to an empty list (so no extensions are used). 
+To read more about extensions and see the list of official supported extensions, 
+go to [the markdown documentation](http://pythonhosted.org/Markdown/extensions/index.html).
 
 #### Strip markup
 Choose if you want to strip or escape tags that aren't allowed.  
