@@ -13,6 +13,7 @@ def markdownify(text):
     # Get the settings or set defaults if not set
     whitelist_tags = getattr(settings, 'MARKDOWNIFY_WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
     whitelist_attrs = getattr(settings, 'MARKDOWNIFY_WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
+    whitelist_styles = getattr(settings, 'MARKDOWNIFY_WHITELIST_STYLES', bleach.sanitizer.ALLOWED_STYLES)
     strip = getattr(settings, 'MARKDOWNIFY_STRIP', True)
     extensions = getattr(settings, 'MARKDOWNIFY_MARKDOWN_EXTENSIONS', [])
 
@@ -24,7 +25,8 @@ def markdownify(text):
         html = bleach.clean(html,
                             tags=whitelist_tags,
                             attributes=whitelist_attrs,
-                            strip=strip, )
+                            strip=strip,
+                            styles=whitelist_styles)
 
         html = bleach.linkify(html)
 
