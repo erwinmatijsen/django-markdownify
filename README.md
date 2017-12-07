@@ -3,7 +3,7 @@
 Template filter to convert Markdown to HTML in Django.
 Markdown is converted to HTML and sanitized.
 
-It is a replacement for the deprecated [django-markup-deprecated](https://pypi.python.org/pypi/django-markup-deprecated).  It depends on [markdown](https://pypi.python.org/pypi/Markdown) and [bleach](https://pypi.python.org/pypi/bleach).
+It is a replacement for the deprecated [django-markup-deprecated](https://pypi.python.org/pypi/django-markup-deprecated).  It depends on [markdown](https://pypi.python.org/pypi/Markdown) and [bleach](https://pypi.python.org/pypi/bleach) (2.0 or higher).
 
 ## Usage
 
