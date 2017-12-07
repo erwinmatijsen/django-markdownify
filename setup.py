@@ -15,7 +15,7 @@ setup(
     description='Markdown template filter for Django.',
     long_description=README,
     url='https://github.com/RRMoelker/django-markdownify',
-    download_url='https://github.com/RRMoelker/django-markdownify/archive/0.2.2.tar.gz',
+    download_url='https://github.com/RRMoelker/django-markdownify/archive/0.3.0.tar.gz',
     author='R Moelker, Erwin Matijsen',
     author_email='erwin@evosites.nl',
     classifiers=[
