@@ -90,6 +90,29 @@ MARKDOWNIFY_WHITELIST_ATTRS = [
 ```
 `MARKDOWNIFY_WHITELIST_ATTRS` defaults to [bleach.sanitizer.ALLOWED_ATTRIBUTES](https://bleach.readthedocs.io/en/latest/clean.html#allowed-attributes-attributes)
 
+#### Whitelist styles
+Add whitelisted styles with `MARKDOWNIFY_WHITELIST_STYLES = []`  
+For example:
+```python
+MARKDOWNIFY_WHITELIST_STYLES = [
+    'color',
+    'font-weight',
+]
+```
+`MARKDOWNIFY_WHITELIST_STYLES` defaults to [bleach.sanitizer.ALLOWED_STYLES](https://bleach.readthedocs.io/en/latest/clean.html#allowed-styles-styles) (Note that it's an empty list)
+
+#### Whitelist protocols
+Add whitelisted protocols with `MARKDOWNIFY_WHITELIST_PROTOCOLS = []`
+For example:
+```python
+MARKDOWNIFY_WHITELIST_PROTOCOLS = [
+    'http',
+    'https',
+]
+```
+`MARKDOWNIFY_WHITELIST_PROTOCOLS` defaults to [bleach.sanitizer.ALLOWED_PROTOCOLS](https://bleach.readthedocs.io/en/latest/clean.html#allowed-protocols-protocols)
+
+
 #### Enable Markdown extensions
 [Markdown](https://pypi.python.org/pypi/Markdown) is extensible with extensions. To enable one or more extensions, add `MARKDOWNIFY_MARKDOWN_EXTENSIONS` to your `settings.py`
 For example:

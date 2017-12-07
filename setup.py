@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-markdownify',
-    version='0.2.2',
+    version='0.3.0',
     packages=['markdownify'],
     include_package_data=True,
     license='MIT',
