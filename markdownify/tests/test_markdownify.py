@@ -14,6 +14,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         self.input_text_default = open(os.path.join(os.path.dirname(__file__), 'input_text_default.md')).read()
         self.input_text_extensions = open(os.path.join(os.path.dirname(__file__), 'input_text_extensions.md')).read()
         self.input_text_bleach = open(os.path.join(os.path.dirname(__file__), 'input_text_bleach.md')).read()
+        self.input_text_strip = open(os.path.join(os.path.dirname(__file__), 'input_text_strip.md')).read()
 
     @override_settings()
     def test_default_settings(self):
@@ -189,4 +190,35 @@ class MarkdownifyTestCase(SimpleTestCase):
             markup and attributes.</p>
             <p><a href="https://bleach.readthedocs.io/en/latest/index.html">Website</a></p>
             """
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_strip(self):
+        """
+        Test disabling of stripping
+        """
+
+        # With stripping enabled (default)
+        settings.MARKDOWNIFY_BLEACH = True
+        settings.MARKDOWNIFY_WHITELIST_TAGS = ['h1', 'p', ]
+        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        settings.MARKDOWNIFY_STRIP = True
+
+        output = markdownify(self.input_text_strip)
+        expected_output = """
+        <h1>Strip</h1>
+        <p>This is a short paragraph with some tags that can be stripped.</p>
+        """
+        self.assertHTMLEqual(output, expected_output)
+
+        # Without stripping
+        settings.MARKDOWNIFY_STRIP = False
+
+        output = markdownify(self.input_text_strip)
+        expected_output = """
+        <h1>Strip</h1>
+        <p>This is a short paragraph with some &lt;em&gt;tags&lt;/em&gt; that can be stripped.</p>
+        """
         self.assertHTMLEqual(output, expected_output)
