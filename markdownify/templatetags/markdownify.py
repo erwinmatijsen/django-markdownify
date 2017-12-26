@@ -33,4 +33,3 @@ def markdownify(text):
         html = bleach.linkify(html)
 
     return mark_safe(html)
-
