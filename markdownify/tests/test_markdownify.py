@@ -15,6 +15,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         self.input_text_extensions = open(os.path.join(os.path.dirname(__file__), 'input_text_extensions.md')).read()
         self.input_text_bleach = open(os.path.join(os.path.dirname(__file__), 'input_text_bleach.md')).read()
         self.input_text_strip = open(os.path.join(os.path.dirname(__file__), 'input_text_strip.md')).read()
+        self.input_text_linkiy = open(os.path.join(os.path.dirname(__file__), 'input_text_linkify.md')).read()
 
     @override_settings()
     def test_default_settings(self):
@@ -221,4 +222,27 @@ class MarkdownifyTestCase(SimpleTestCase):
         <h1>Strip</h1>
         <p>This is a short paragraph with some &lt;em&gt;tags&lt;/em&gt; that can be stripped.</p>
         """
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_linkify(self):
+        """
+        Test bleach linkify
+        """
+
+        # Set some settings
+        settings.MARKDOWNIFY_WHITELIST_TAGS = ['h1', 'p', 'a', ]
+        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+        del settings.MARKDOWNIFY_BLEACH
+
+        output = markdownify(self.input_text_linkiy)
+        expected_output = """
+            <h1>Linkify</h1>
+            <p><a href="http://somelink.com" rel="nofollow">http://somelink.com</a></p>
+            <p><a href="http://somelink.com" rel="nofollow">Website</a></p>
+        """
+
         self.assertHTMLEqual(output, expected_output)
