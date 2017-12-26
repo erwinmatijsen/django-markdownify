@@ -11,7 +11,8 @@ class MarkdownifyTestCase(SimpleTestCase):
 
     def setUp(self):
 
-        self.input_text = open(os.path.join(os.path.dirname(__file__), 'input_text.md')).read()
+        self.input_text_default = open(os.path.join(os.path.dirname(__file__), 'input_text_default.md')).read()
+        self.input_text_extensions = open(os.path.join(os.path.dirname(__file__), 'input_text_extensions.md')).read()
 
     @override_settings()
     def test_default_settings(self):
@@ -22,17 +23,17 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete all bleach related settings
-        del settings.MARKDOWNIFY_WHITELIST_TAGS,
-        del settings.MARKDOWNIFY_WHITELIST_ATTRS,
-        del settings.MARKDOWNIFY_WHITELIST_STYLES,
-        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS,
-        del settings.MARKDOWNIFY_STRIP,
-        del settings.MARKDOWNIFY_BLEACH,
+        del settings.MARKDOWNIFY_WHITELIST_TAGS
+        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+        del settings.MARKDOWNIFY_BLEACH
 
         # Set MARKDOWNIFY_MARKDOWN_EXTENSIONS to test abbr
         settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.extra', ]
 
-        output = markdownify(self.input_text)
+        output = markdownify(self.input_text_default)
         expected_output = """
         <a href="http://somelink.com" rel="nofollow" title="somelink">This</a> is <strong>not</strong> an 
         <abbr title="abbrevation">abbr</abbr>. It <em>is</em> however an <acronym title="acronym">accr</acronym>.
@@ -68,6 +69,10 @@ class MarkdownifyTestCase(SimpleTestCase):
 
     @override_settings()
     def test_custom_settings(self):
+        """
+        If options are set in settings.py, default values of bleach.sanitize should be overriden.
+        NB: rel="nofollow" is added after sanitizing with bleach.linkify
+        """
 
         # Set some settings
         settings.MARKDOWNIFY_WHITELIST_TAGS = ['p', 'a', ]
@@ -80,7 +85,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         # Set MARKDOWNIFY_MARKDOWN_EXTENSIONS to test abbr
         settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.extra', ]
 
-        output = markdownify(self.input_text)
+        output = markdownify(self.input_text_default)
         expected_output = """
         <p><a href="http://somelink.com" rel="nofollow">This</a> is not an abbr. It is however an accr.
         Here, have piece of code. And two lists.</p>
@@ -106,5 +111,45 @@ class MarkdownifyTestCase(SimpleTestCase):
         <p>Like this blockquote.</p>
         <p>This <a href="#" rel="nofollow">link</a> has a target.</p>
         """
+
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_extensions(self):
+        """
+        Test if Python Markdown extensions are working.
+        """
+
+        # Set default settings, and tags
+        settings.MARKDOWNIFY_WHITELIST_TAGS = ['p', 'pre', ]
+        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+        del settings.MARKDOWNIFY_BLEACH
+
+        # Enable a included extension
+        settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code', ]
+        output = markdownify(self.input_text_extensions)
+
+        expected_output = """
+            <p>Fenced code:</p>
+            <pre>def test(y): print(y)</pre>
+            """
+
+        self.assertHTMLEqual(output, expected_output)
+
+        # Disable extensions
+        del settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS
+
+        output = markdownify(self.input_text_extensions)
+
+        expected_output = """
+                    <p>Fenced code:
+                    ~~~~~~~~~~~~~~~~~~~~{.python}
+                    def test(y):  
+                        print(y)  
+                    ~~~~~~~~~~~~~~~~~~~~</p>
+                    """
 
         self.assertHTMLEqual(output, expected_output)
