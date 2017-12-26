@@ -13,6 +13,7 @@ class MarkdownifyTestCase(SimpleTestCase):
 
         self.input_text_default = open(os.path.join(os.path.dirname(__file__), 'input_text_default.md')).read()
         self.input_text_extensions = open(os.path.join(os.path.dirname(__file__), 'input_text_extensions.md')).read()
+        self.input_text_bleach = open(os.path.join(os.path.dirname(__file__), 'input_text_bleach.md')).read()
 
     @override_settings()
     def test_default_settings(self):
@@ -152,4 +153,40 @@ class MarkdownifyTestCase(SimpleTestCase):
                     ~~~~~~~~~~~~~~~~~~~~</p>
                     """
 
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_no_bleach(self):
+        """
+        Test enabling and disabling of bleach
+        """
+
+        # With bleach (and default settings)
+        settings.MARKDOWNIFY_BLEACH = True
+
+        del settings.MARKDOWNIFY_WHITELIST_TAGS
+        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+
+        output = markdownify(self.input_text_bleach)
+        expected_output = """
+            Bleach
+            Bleach is an allowed-list-based HTML sanitizing library that escapes or strips markup and attributes.
+            <a href="https://bleach.readthedocs.io/en/latest/index.html" rel="nofollow">Website</a>
+            """
+
+        self.assertHTMLEqual(output, expected_output)
+
+        # Without bleach
+        settings.MARKDOWNIFY_BLEACH = False
+        output = markdownify(self.input_text_bleach)
+
+        expected_output = """
+            <h1>Bleach</h1>
+            <p>Bleach is an allowed-list-based HTML sanitizing library that escapes or strips 
+            markup and attributes.</p>
+            <p><a href="https://bleach.readthedocs.io/en/latest/index.html">Website</a></p>
+            """
         self.assertHTMLEqual(output, expected_output)
