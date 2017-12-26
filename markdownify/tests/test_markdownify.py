@@ -14,7 +14,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         self.input_text = open(os.path.join(os.path.dirname(__file__), 'input_text.md')).read()
 
     @override_settings()
-    def test_default_tags(self):
+    def test_default_settings(self):
         """
         If no options are given in settings.py, use default settings from bleach.
         NB: acronym is deprecated in HTML5
@@ -33,10 +33,9 @@ class MarkdownifyTestCase(SimpleTestCase):
         settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.extra', ]
 
         output = markdownify(self.input_text)
-
         expected_output = """
         <a href="http://somelink.com" rel="nofollow" title="somelink">This</a> is <strong>not</strong> an 
-        <abbr title="abbrevation">abbr</abbr>. It <em>is</em> however a <acronym title="acronym">accr</acronym>.
+        <abbr title="abbrevation">abbr</abbr>. It <em>is</em> however an <acronym title="acronym">accr</acronym>.
         Here, have piece of <code>code</code>. And two lists. 
         
         This is list one: 
@@ -63,6 +62,49 @@ class MarkdownifyTestCase(SimpleTestCase):
         <blockquote>Like this blockquote.</blockquote>
         
         This <a href="#" rel="nofollow">link</a> has a target.
+        """
+
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_custom_settings(self):
+
+        # Set some settings
+        settings.MARKDOWNIFY_WHITELIST_TAGS = ['p', 'a', ]
+        settings.MARKDOWNIFY_WHITELIST_ATTRS = ['href', 'style', ]
+        settings.MARKDOWNIFY_WHITELIST_STYLES = ['color', 'font-weight', 'border', ]
+        settings.MARKDOWNIFY_WHITELIST_PROTOCOLS = ['http', 'ftp', ]
+        settings.MARKDOWNIFY_STRIP = True
+        settings.MARKDOWNIFY_BLEACH = True
+
+        # Set MARKDOWNIFY_MARKDOWN_EXTENSIONS to test abbr
+        settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.extra', ]
+
+        output = markdownify(self.input_text)
+        expected_output = """
+        <p><a href="http://somelink.com" rel="nofollow">This</a> is not an abbr. It is however an accr.
+        Here, have piece of code. And two lists.</p>
+
+        <p>This is list one:</p> 
+        Item 1
+        Item 2
+        
+        <p>This is list two:</p> 
+        Item 1
+        Item 2
+
+        <p style="color: red; font-weight: 900; border: 1px solid blue;">
+        This paragraph has some inline styling.</p>
+
+        <p>In this paragraph, protocols are being tested. 
+        <a href="http://httplink.com" rel="nofollow">http-link</a>, 
+        <a>https-link</a>,
+        <a>mailto-link</a>,
+        <a href="ftp://ftpserver.com" rel="nofollow">ftp-link</a>.</p>
+
+        <p>And last but not least, there are some tags to test.</p>
+        <p>Like this blockquote.</p>
+        <p>This <a href="#" rel="nofollow">link</a> has a target.</p>
         """
 
         self.assertHTMLEqual(output, expected_output)
