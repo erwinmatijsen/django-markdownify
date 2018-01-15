@@ -1,4 +1,4 @@
 # Linkify
-http://somelink.com
-
-[Website](http://somelink.com)
+http://somelink.com  
+someone@somecompany.com  
+[Website](http://somelink.com)  

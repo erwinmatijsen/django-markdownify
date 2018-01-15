@@ -15,14 +15,13 @@ class MarkdownifyTestCase(SimpleTestCase):
         self.input_text_extensions = open(os.path.join(os.path.dirname(__file__), 'input_text_extensions.md')).read()
         self.input_text_bleach = open(os.path.join(os.path.dirname(__file__), 'input_text_bleach.md')).read()
         self.input_text_strip = open(os.path.join(os.path.dirname(__file__), 'input_text_strip.md')).read()
-        self.input_text_linkiy = open(os.path.join(os.path.dirname(__file__), 'input_text_linkify.md')).read()
+        self.input_text_linkify = open(os.path.join(os.path.dirname(__file__), 'input_text_linkify.md')).read()
 
     @override_settings()
     def test_default_settings(self):
         """
-        If no options are given in settings.py, use default settings from bleach.
+        If no bleach related options are given in settings.py, use default settings from bleach.
         NB: acronym is deprecated in HTML5
-        NB: rel="nofollow" is added after sanitizing with bleach.linkify
         """
 
         # Delete all bleach related settings
@@ -38,7 +37,7 @@ class MarkdownifyTestCase(SimpleTestCase):
 
         output = markdownify(self.input_text_default)
         expected_output = """
-        <a href="http://somelink.com" rel="nofollow" title="somelink">This</a> is <strong>not</strong> an 
+        <a href="http://somelink.com" title="somelink">This</a> is <strong>not</strong> an 
         <abbr title="abbrevation">abbr</abbr>. It <em>is</em> however an <acronym title="acronym">accr</acronym>.
         Here, have piece of <code>code</code>. And two lists. 
         
@@ -57,15 +56,15 @@ class MarkdownifyTestCase(SimpleTestCase):
         This paragraph has some inline styling.
         
         In this paragraph, protocols are being tested. 
-        <a href="http://httplink.com" rel="nofollow">http-link</a>, 
-        <a href="https://httpslink.com" rel="nofollow">https-link</a>,
+        <a href="http://httplink.com">http-link</a>, 
+        <a href="https://httpslink.com">https-link</a>,
         <a href="mailto:somebody@example.com">mailto-link</a>,
         <a>ftp-link</a>.
         
         And last but not least, there are some <i>tags</i> to <b>test</b>.
         <blockquote>Like this blockquote.</blockquote>
         
-        This <a href="#" rel="nofollow">link</a> has a target.
+        This <a href="#">link</a> has a target.
         """
 
         self.assertHTMLEqual(output, expected_output)
@@ -73,8 +72,7 @@ class MarkdownifyTestCase(SimpleTestCase):
     @override_settings()
     def test_custom_settings(self):
         """
-        If options are set in settings.py, default values of bleach.sanitize should be overriden.
-        NB: rel="nofollow" is added after sanitizing with bleach.linkify
+        If options are set in settings.py, default values of bleach.sanitize should be overridden.
         """
 
         # Set some settings
@@ -90,7 +88,7 @@ class MarkdownifyTestCase(SimpleTestCase):
 
         output = markdownify(self.input_text_default)
         expected_output = """
-        <p><a href="http://somelink.com" rel="nofollow">This</a> is not an abbr. It is however an accr.
+        <p><a href="http://somelink.com">This</a> is not an abbr. It is however an accr.
         Here, have piece of code. And two lists.</p>
 
         <p>This is list one:</p> 
@@ -105,14 +103,14 @@ class MarkdownifyTestCase(SimpleTestCase):
         This paragraph has some inline styling.</p>
 
         <p>In this paragraph, protocols are being tested. 
-        <a href="http://httplink.com" rel="nofollow">http-link</a>, 
+        <a href="http://httplink.com">http-link</a>, 
         <a>https-link</a>,
         <a>mailto-link</a>,
-        <a href="ftp://ftpserver.com" rel="nofollow">ftp-link</a>.</p>
+        <a href="ftp://ftpserver.com">ftp-link</a>.</p>
 
         <p>And last but not least, there are some tags to test.</p>
         <p>Like this blockquote.</p>
-        <p>This <a href="#" rel="nofollow">link</a> has a target.</p>
+        <p>This <a href="#">link</a> has a target.</p>
         """
 
         self.assertHTMLEqual(output, expected_output)
@@ -131,7 +129,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         del settings.MARKDOWNIFY_STRIP
         del settings.MARKDOWNIFY_BLEACH
 
-        # Enable a included extension
+        # Enable an included extension
         settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code', ]
         output = markdownify(self.input_text_extensions)
 
@@ -176,7 +174,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         expected_output = """
             Bleach
             Bleach is an allowed-list-based HTML sanitizing library that escapes or strips markup and attributes.
-            <a href="https://bleach.readthedocs.io/en/latest/index.html" rel="nofollow">Website</a>
+            <a href="https://bleach.readthedocs.io/en/latest/index.html">Website</a>
             """
 
         self.assertHTMLEqual(output, expected_output)
@@ -227,22 +225,99 @@ class MarkdownifyTestCase(SimpleTestCase):
     @override_settings()
     def test_linkify(self):
         """
-        Test bleach linkify
+        Test bleach linkify defaults
         """
 
         # Set some settings
         settings.MARKDOWNIFY_WHITELIST_TAGS = ['h1', 'p', 'a', ]
-        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        settings.MARKDOWNIFY_WHITELIST_ATTRS = ['href', ]
         del settings.MARKDOWNIFY_WHITELIST_STYLES
         del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
         del settings.MARKDOWNIFY_STRIP
         del settings.MARKDOWNIFY_BLEACH
 
-        output = markdownify(self.input_text_linkiy)
+        # Delete Linkify settings
+        del settings.MARKDOWNIFY_LINKIFY_TEXT
+        del settings.MARKDOWNIFY_LINKIFY_PARSE_EMAIL
+        del settings.MARKDOWNIFY_LINKIFY_CALLBACKS
+        del settings.MARKDOWNIFY_LINKIFY_SKIP_TAGS
+
+        output = markdownify(self.input_text_linkify)
         expected_output = """
             <h1>Linkify</h1>
-            <p><a href="http://somelink.com" rel="nofollow">http://somelink.com</a></p>
-            <p><a href="http://somelink.com" rel="nofollow">Website</a></p>
+            <p>
+              <a href="http://somelink.com">http://somelink.com</a>
+              someone@somecompany.com
+              <a href="http://somelink.com">Website</a>
+            </p>
         """
 
         self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_linkify_no_linkify(self):
+        """
+        Test bleach linkify turned off
+        """
+
+        # Set some settings
+        settings.MARKDOWNIFY_WHITELIST_TAGS = ['h1', 'p', 'a', ]
+        settings.MARKDOWNIFY_WHITELIST_ATTRS = ['href', ]
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+        del settings.MARKDOWNIFY_BLEACH
+
+        settings.MARKDOWNIFY_LINKIFY_TEXT = False
+
+        output = markdownify(self.input_text_linkify)
+
+        expected_output = """
+            <h1>Linkify</h1>
+            <p>http://somelink.com
+               someone@somecompany.com
+               <a href="http://somelink.com">Website</a>
+            </p>
+        """
+
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_linkify_linkify_email(self):
+        """
+        Test bleach linkify email
+        """
+
+        # Set some settings
+        settings.MARKDOWNIFY_WHITELIST_TAGS = ['h1', 'p', 'a', ]
+        settings.MARKDOWNIFY_WHITELIST_ATTRS = ['href', ]
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+        del settings.MARKDOWNIFY_BLEACH
+
+        del settings.MARKDOWNIFY_LINKIFY_TEXT
+        del settings.MARKDOWNIFY_LINKIFY_CALLBACKS
+        del settings.MARKDOWNIFY_LINKIFY_SKIP_TAGS
+
+        settings.MARKDOWNIFY_LINKIFY_PARSE_EMAIL = True
+
+        output = markdownify(self.input_text_linkify)
+
+        expected_output = """
+            <h1>Linkify</h1>
+            <p>
+              <a href="http://somelink.com">http://somelink.com</a>
+              <a href="mailto:someone@somecompany.com">someone@somecompany.com</a>
+              <a href="http://somelink.com">Website</a>
+            </p>
+        """
+
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_backwards_compatible(self):
+        """
+        Is the new version compatible with the old version?
+        """
+        self.fail("Finish the test!")
