@@ -68,11 +68,11 @@ For example::
 Enable Markdown Extensions
 --------------------------
 `Markdown <https://pypi.python.org/pypi/Markdown>`_ is extensible with extensions. To enable one or more extensions,
-add `MARKDOWNIFY_MARKDOWN_EXTENSIONS` to your ``settings.py``
+add ``MARKDOWNIFY_MARKDOWN_EXTENSIONS`` to your ``settings.py``.
 For example::
 
-    MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code',
-                                       'markdown.extensions.extra', ]
+  MARKDOWNIFY_MARKDOWN_EXTENSIONS = ['markdown.extensions.fenced_code',
+                                     'markdown.extensions.extra', ]
 
 ``MARKDOWNIFY_MARKDOWN_EXTENSIONS`` defaults to an empty list (so no extensions are used).
 To read more about extensions and see the list of official supported extensions,
@@ -106,12 +106,12 @@ Set callbacks
 Set ``MARKDOWNIFY_LINKIFY_CALLBACKS`` to use `callbacks <http://pythonhosted.org/bleach/linkify.html#callbacks-for-adjusting-attributes-callbacks>`_ to modify your links,
 for example setting a title attribute to all your links.::
 
-    def set_title(attrs, new=False):
-       attrs[(None, u'title')] = u'link in user text'
-       return attrs
+  def set_title(attrs, new=False):
+      attrs[(None, u'title')] = u'link in user text'
+      return attrs
 
-    # settings.py
-    MARKDOWNIFY_LINKIFY_CALLBACKS = [set_title, ]
+  # settings.py
+  MARKDOWNIFY_LINKIFY_CALLBACKS = [set_title, ]
 
 ``MARKDOWNIFY_LINKIFY_CALLBACKS`` defaults to ``None``, so no callbacks are used. See the `bleach documentation <http://pythonhosted.org/bleach/linkify.html#callbacks-for-adjusting-attributes-callbacks>`_ for more examples.
 

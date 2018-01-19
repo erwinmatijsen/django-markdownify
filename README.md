@@ -1,4 +1,4 @@
-# Django Markdown filter
+# Django Markdownify - A Django Markdown filter
 
 Django Markdownify is a template filter to convert Markdown to HTML in Django. Markdown is converted to HTML and sanitized.
 

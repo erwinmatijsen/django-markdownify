@@ -314,10 +314,3 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         self.assertHTMLEqual(output, expected_output)
-
-    @override_settings()
-    def test_backwards_compatible(self):
-        """
-        Is the new version compatible with the old version?
-        """
-        self.fail("Finish the test!")

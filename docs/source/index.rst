@@ -5,17 +5,18 @@
 
 
 
-..  toctree::
-    :maxdepth: 1
-    :caption: Table of contents
-    :name: maintoc
+.. toctree::
+   :maxdepth: 1
+   :caption: Table of contents
+   :name: maintoc
 
-    Introduction <self>
-    Installation and usage <install_and_usage>
-    Settings <settings>
+   Introduction <self>
+   Installation and usage <install_and_usage>
+   Settings <settings>
+   Tests <tests>
 
-Markdownify - A Django Markdown filter
-=======================================
+Django Markdownify - A Django Markdown filter
+=============================================
 **Django Markdownify is a template filter to convert Markdown to HTML in Django.
 Markdown is converted to HTML and sanitized.**
 
