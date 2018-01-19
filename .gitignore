@@ -6,3 +6,6 @@ dist
 README.rst
 setup.cfg
 *.egg-info
+
+# Ignore build docs
+docs/build
