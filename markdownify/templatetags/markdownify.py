@@ -27,12 +27,7 @@ def markdownify(text):
     extensions = getattr(settings, 'MARKDOWNIFY_MARKDOWN_EXTENSIONS', [])
 
     # Bleach Linkify
-    linkify = \
-        linkifyfilter = \
-        linkify_callbacks = \
-        linkify_skip_tags = \
-        linkify_parse_email = None
-
+    linkify = None
     linkify_text = getattr(settings, 'MARKDOWNIFY_LINKIFY_TEXT', True)
 
     if linkify_text:
