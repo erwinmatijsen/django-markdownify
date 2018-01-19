@@ -28,7 +28,7 @@ Example::
 Is transformed to::
 
   <p>
-    Some <em>test</em> <a href="" rel="nofollow">link</a>
+    Some <em>test</em> <a href="#">link</a>
   </p>
 
 
