@@ -2,7 +2,7 @@
 
 Django Markdownify is a template filter to convert Markdown to HTML in Django. Markdown is converted to HTML and sanitized.
 
-Read the full documentation on [Read the docs](http://django-markdownify.readthedocs.io/en/latest/).
+Read the full documentation on [Read the docs](http://django-markdownify.readthedocs.io/en/latest/) or check out the package on [pypi](https://pypi.python.org/pypi/django-markdownify).
 
 ## Usage
 
