@@ -67,7 +67,7 @@ For example::
 
 Enable Markdown Extensions
 --------------------------
-`Markdown <https://pypi.python.org/pypi/Markdown>`_ is extensible with extensions. To enable one or more extensions,
+`Python-Markdown <https://python-markdown.github.io/>`_ is extensible with extensions. To enable one or more extensions,
 add ``MARKDOWNIFY_MARKDOWN_EXTENSIONS`` to your ``settings.py``.
 For example::
 
@@ -76,7 +76,7 @@ For example::
 
 ``MARKDOWNIFY_MARKDOWN_EXTENSIONS`` defaults to an empty list (so no extensions are used).
 To read more about extensions and see the list of official supported extensions,
-go to `the markdown documentation <http://pythonhosted.org/Markdown/extensions/index.html>`_.
+go to `the markdown documentation <https://python-markdown.github.io/extensions/>`_.
 
 
 Strip markup
