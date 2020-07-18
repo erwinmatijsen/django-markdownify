@@ -10,18 +10,18 @@ Add whitelisted tags with ``MARKDOWNIFY_WHITELIST_TAGS = []``
 For example::
 
   MARKDOWNIFY_WHITELIST_TAGS = [
-    'a',
-    'abbr',
-    'acronym',
-    'b',
-    'blockquote',
-    'em',
-    'i',
-    'li',
-    'ol',
-    'p',
-    'strong',
-    'ul'
+      'a',
+      'abbr',
+      'acronym',
+      'b',
+      'blockquote',
+      'em',
+      'i',
+      'li',
+      'ol',
+      'p',
+      'strong',
+      'ul'
   ]
 
 ``MARKDOWNIFY_WHITELIST_TAGS`` defaults to `bleach.sanitizer.ALLOWED_TAGS <https://bleach.readthedocs.io/en/latest/clean.html#allowed-tags-tags>`_
