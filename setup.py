@@ -14,6 +14,7 @@ setup(
     license='MIT',
     description='Markdown template filter for Django.',
     long_description=README,
+    long_description_content_type="text/markdown",
     url='https://github.com/RRMoelker/django-markdownify',
     download_url='https://github.com/RRMoelker/django-markdownify/archive/0.8.0.tar.gz',
     author='R Moelker, Erwin Matijsen',
