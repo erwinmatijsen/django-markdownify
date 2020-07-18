@@ -20,8 +20,8 @@ Or add ``django-markdownify`` to your requirements.txt and run ``pip install -r 
 Finally add ``markdownify`` to your installed apps in ``settings.py``::
 
   INSTALLED_APPS = [
-    ...
-    'markdownify',
+      ...
+      'markdownify',
   ]
 
 Usage
@@ -45,15 +45,15 @@ Or use the filter on a variable passed to the template via your views. For examp
 
   #views.py
   class MarkDown(TemplateView):
-    template_name = 'index.html'
+      template_name = 'index.html'
 
-    def get_context_data(self, **kwargs):
-        markdowntext = open(os.path.join(os.path.dirname(__file__), 'templates/test.md')).read()
+      def get_context_data(self, **kwargs):
+          markdowntext = open(os.path.join(os.path.dirname(__file__), 'templates/test.md')).read()
 
-        context = super(MarkDown, self).get_context_data(**kwargs)
-        context['markdowntext'] = markdowntext
+          context = super(MarkDown, self).get_context_data(**kwargs)
+          context['markdowntext'] = markdowntext
 
-        return context
+          return context
 
   #index.html
   {% load markdownify %}
