@@ -113,6 +113,13 @@ class MarkdownifyTestCase(SimpleTestCase):
         <p>This <a href="#">link</a> has a target.</p>
         """
 
+        print("OUTPUT")
+        print(output)
+
+        print("")
+        print("EXPECTED")
+        print(expected_output)
+
         self.assertHTMLEqual(output, expected_output)
 
     @override_settings()
