@@ -1,5 +1,6 @@
+import warnings
+
 from functools import partial
-from collections import namedtuple
 
 from django import template
 from django.conf import settings
@@ -13,6 +14,12 @@ register = template.Library()
 
 
 def legacy():
+    """
+    Function used to transform old style settings to new style settings
+    """
+
+
+
     # Bleach settings
     whitelist_tags = getattr(settings, 'MARKDOWNIFY_WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
     whitelist_attrs = getattr(settings, 'MARKDOWNIFY_WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
@@ -34,20 +41,9 @@ def legacy():
             "SKIP_TAGS": getattr(settings, 'MARKDOWNIFY_LINKIFY_SKIP_TAGS', None)
         }
 
-        # linkify_parse_email = getattr(settings, 'MARKDOWNIFY_LINKIFY_PARSE_EMAIL', False)
-        # linkify_callbacks = getattr(settings, 'MARKDOWNIFY_LINKIFY_CALLBACKS', None)
-        # linkify_skip_tags = getattr(settings, 'MARKDOWNIFY_LINKIFY_SKIP_TAGS', None)
-        # linkifyfilter = bleach.linkifier.LinkifyFilter
-        #
-        # linkify = [partial(linkifyfilter,
-        #         callbacks=linkify_callbacks,
-        #         skip_tags=linkify_skip_tags,
-        #         parse_email=linkify_parse_email
-        #         )]
-
     return {
         "STRIP": strip,
-        "EXTENSIONS": extensions,
+        "MARKDOWN_EXTENSIONS": extensions,
         "WHITELIST_TAGS": whitelist_tags,
         "WHITELIST_ATTRS": whitelist_attrs,
         "WHITELIST_STYLES": whitelist_styles,
@@ -88,8 +84,6 @@ def markdownify(text, custom_settings="default"):
 
     if has_settings_old_style:
         markdownify_settings = legacy()
-        print("TEST")
-        print(markdownify_settings)
     else:
         try:
             markdownify_settings = settings.MARKDOWNIFY[custom_settings]
@@ -126,7 +120,7 @@ def markdownify(text, custom_settings="default"):
     html = markdown.markdown(text or "", extensions=extensions)
 
     # Sanitize html if wanted
-    if markdownify_settings.get("BLEACH"):
+    if markdownify_settings.get("BLEACH", True):
         cleaner = bleach.Cleaner(tags=whitelist_tags,
                                  attributes=whitelist_attrs,
                                  styles=whitelist_styles,
