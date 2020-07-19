@@ -18,8 +18,6 @@ def legacy():
     Function used to transform old style settings to new style settings
     """
 
-
-
     # Bleach settings
     whitelist_tags = getattr(settings, 'MARKDOWNIFY_WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
     whitelist_attrs = getattr(settings, 'MARKDOWNIFY_WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
@@ -79,8 +77,11 @@ def markdownify(text, custom_settings="default"):
     }
 
     # First check if there are any old style settings being used
-    tmp = [f"MARKDOWNIFY_{key}" for key in setting_keys]
-    has_settings_old_style = any(tmp)
+    has_settings_old_style = False
+    for key in setting_keys:
+        if getattr(settings, f"MARKDOWNIFY_{key}", None):
+            has_settings_old_style = True
+            break
 
     if has_settings_old_style:
         markdownify_settings = legacy()
