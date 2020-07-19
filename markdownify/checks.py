@@ -28,3 +28,5 @@ def settings_check(app_configs, **kwargs):
             hint="See https://django-markdownify.readthedocs.io/en/latest/ for instructions on upgrading your settings",
             obj="Markdownify"
         )]
+
+    return []

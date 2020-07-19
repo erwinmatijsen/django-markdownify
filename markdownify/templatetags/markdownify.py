@@ -88,7 +88,7 @@ def markdownify(text, custom_settings="default"):
     else:
         try:
             markdownify_settings = settings.MARKDOWNIFY[custom_settings]
-        except KeyError:
+        except (AttributeError, KeyError):
             markdownify_settings = {}
 
     # Bleach settings
