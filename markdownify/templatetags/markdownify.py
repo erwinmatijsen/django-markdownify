@@ -29,11 +29,12 @@ def legacy():
     extensions = getattr(settings, 'MARKDOWNIFY_MARKDOWN_EXTENSIONS', [])
 
     # Bleach Linkify
-    values = None
+    values = {}
     linkify_text = getattr(settings, 'MARKDOWNIFY_LINKIFY_TEXT', True)
 
     if linkify_text:
         values = {
+            "PARSE_URLS": True,
             "PARSE_EMAIL": getattr(settings, 'MARKDOWNIFY_LINKIFY_PARSE_EMAIL', False),
             "CALLBACKS": getattr(settings, 'MARKDOWNIFY_LINKIFY_CALLBACKS', None),
             "SKIP_TAGS": getattr(settings, 'MARKDOWNIFY_LINKIFY_SKIP_TAGS', None)
@@ -54,6 +55,7 @@ def legacy():
 @register.filter
 def markdownify(text, custom_settings="default"):
 
+    # Check for legacy settings
     setting_keys = [
         'WHITELIST_TAGS',
         'WHITELIST_ATTRS',
@@ -64,19 +66,6 @@ def markdownify(text, custom_settings="default"):
         'LINKIFY_TEXT',
         'BLEACH',
     ]
-
-    defaults = {
-        'WHITELIST_TAGS': bleach.sanitizer.ALLOWED_TAGS,
-        'WHITELIST_ATTRS': bleach.sanitizer.ALLOWED_ATTRIBUTES,
-        'WHITELIST_STYLES': bleach.sanitizer.ALLOWED_STYLES,
-        'WHITELIST_PROTOCOLS': bleach.sanitizer.ALLOWED_PROTOCOLS,
-        'STRIP': True,
-        'MARKDOWN_EXTENSIONS': [],
-        'LINKIFY_TEXT': {},
-        'BLEACH': True
-    }
-
-    # First check if there are any old style settings being used
     has_settings_old_style = False
     for key in setting_keys:
         if getattr(settings, f"MARKDOWNIFY_{key}", None):
@@ -103,12 +92,11 @@ def markdownify(text, custom_settings="default"):
 
     # Bleach Linkify
     linkify = None
-    linkify_text = markdownify_settings.get('LINKIFY_TEXT', {})
-
-    if linkify_text:
+    linkify_text = markdownify_settings.get('LINKIFY_TEXT', {"PARSE_URLS": True})
+    if linkify_text.get("PARSE_URLS"):
         linkify_parse_email = linkify_text.get('PARSE_EMAIL', False)
-        linkify_callbacks = linkify_text.get('CALLBACKS', None)
-        linkify_skip_tags = linkify_text.get('SKIP_TAGS', None)
+        linkify_callbacks = linkify_text.get('CALLBACKS', [])
+        linkify_skip_tags = linkify_text.get('SKIP_TAGS', [])
         linkifyfilter = bleach.linkifier.LinkifyFilter
 
         linkify = [partial(linkifyfilter,
