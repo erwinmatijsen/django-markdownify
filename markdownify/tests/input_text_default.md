@@ -1,6 +1,4 @@
-*[abbr]: abbrevation
-
-[This](http://somelink.com "somelink") is **not** an abbr. It *is* however an <acronym title="acronym">accr</acronym>.
+[This](http://somelink.com "somelink") is **not** a real link. It *is* however an <acronym title="acronym">accr</acronym>.
 Here, have piece of `code`. And two lists.
 
 This is list one:
