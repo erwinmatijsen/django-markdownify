@@ -10,6 +10,8 @@ setup(
     name='django-markdownify',
     version='0.8.1',
     packages=['markdownify'],
+    package_dir={'markdownify': 'markdownify'},
+    package_data={'markdownify': ['tests/*.md']},
     include_package_data=True,
     license='MIT',
     description='Markdown template filter for Django.',
