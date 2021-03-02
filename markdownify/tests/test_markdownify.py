@@ -318,6 +318,16 @@ class MarkdownifyOldSettingsTestCase(SimpleTestCase):
 class MarkdownifyTestCase(SimpleTestCase):
     maxDiff = None
 
+    @staticmethod
+    def remove_old_style_settings():
+        del settings.MARKDOWNIFY_WHITELIST_TAGS
+        del settings.MARKDOWNIFY_WHITELIST_ATTRS
+        del settings.MARKDOWNIFY_WHITELIST_STYLES
+        del settings.MARKDOWNIFY_WHITELIST_PROTOCOLS
+        del settings.MARKDOWNIFY_STRIP
+        del settings.MARKDOWNIFY_BLEACH
+        del settings.MARKDOWNIFY_MARKDOWN_EXTENSIONS
+
     @override_settings()
     def setUp(self):
 
@@ -332,10 +342,11 @@ class MarkdownifyTestCase(SimpleTestCase):
     @override_settings()
     def test_default_settings(self):
         """
-        If no bleach related options are given in settings.py, use default settings from bleach.
+        If no bleach related options are given in settings.py, use default settings.
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         output = markdownify(self.input_text_default)
@@ -379,6 +390,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # Set some settings
@@ -421,6 +433,12 @@ class MarkdownifyTestCase(SimpleTestCase):
         <p>This <a href="#">link</a> has a target.</p>
         """
 
+        print("OUTPUT")
+        print(output)
+
+        print("EXPECTED")
+        print(expected_output)
+
         self.assertHTMLEqual(output, expected_output)
 
     @override_settings()
@@ -430,6 +448,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # Set default settings, and tags
@@ -470,6 +489,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # With bleach (and default settings)
@@ -507,6 +527,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # With stripping enabled (default)
@@ -542,6 +563,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # Set some settings
@@ -571,6 +593,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # Set some settings, turn off linkify completely
@@ -603,6 +626,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # Set some settings
@@ -636,6 +660,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         """
 
         # Delete settings
+        self.remove_old_style_settings()
         del settings.MARKDOWNIFY
 
         # Set alternative settings

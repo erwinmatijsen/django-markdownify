@@ -1,6 +1,8 @@
 .. _install:
+
 Installation and usage
 ======================
+
 
 Requirements
 ------------
@@ -21,7 +23,7 @@ Finally add ``markdownify`` to your installed apps in ``settings.py``::
 
   INSTALLED_APPS = [
       ...
-      'markdownify',
+      'markdownify.apps.MarkdownifyConfig',
   ]
 
 Usage
@@ -43,19 +45,30 @@ Use Markdown in your template directly::
 
 Or use the filter on a variable passed to the template via your views. For example::
 
-  #views.py
+  # views.py
   class MarkDown(TemplateView):
       template_name = 'index.html'
 
       def get_context_data(self, **kwargs):
           markdowntext = open(os.path.join(os.path.dirname(__file__), 'templates/test.md')).read()
 
-          context = super(MarkDown, self).get_context_data(**kwargs)
+          context = super().get_context_data(**kwargs)
           context['markdowntext'] = markdowntext
 
           return context
 
-  #index.html
+  # index.html
   {% load markdownify %}
   {{ markdowntext|markdownify }}
 
+You probably want to add some extra allowed tags and attributes in the :doc:`settings`, because the defaults are rather sparse.
+
+It is possible to have different settings for different use cases, for example::
+
+    # page1.html
+    {{ markdowntext|markdownify }} <!-- uses the default settings -->
+
+    # page2.html
+    {{ markdowntext|markdownify:"restricted" }} <!-- uses the 'restricted' settings -->
+
+See :doc:`settings` for a more detailed explanation.
