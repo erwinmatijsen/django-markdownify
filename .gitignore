@@ -1,5 +1,7 @@
 *.pyc
 .cache
+.venv
+.idea
 
 # Ignore Pypi stuff
 dist
@@ -10,3 +12,4 @@ build
 
 # Ignore build docs
 docs/build
+docs/output

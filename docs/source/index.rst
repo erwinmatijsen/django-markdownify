@@ -32,4 +32,4 @@ Is transformed to::
   </p>
 
 
-The code can be found on `github <https://github.com/RRMoelker/django-markdownify>`_.
+The code can be found on `github <https://github.com/erwinmatijsen/django-markdownify>`_.
