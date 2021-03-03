@@ -49,4 +49,12 @@ For example::
       }
    }
 
+And in your templates::
+
+   <!-- page1.html -->
+   {{ mytext|markdownify }} <!-- Uses your default settings -->
+
+   <!-- page2.html -->
+   {{ mytext|markdownify:"alternative" }} <!-- Uses your alternative settings -->
+
 The code can be found on `Github <https://github.com/erwinmatijsen/django-markdownify>`_.

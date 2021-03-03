@@ -60,6 +60,17 @@ MARKDOWNIFY = {
 }
 ```
 
+And in your templates:
+
+```html
+
+<!-- page1.html -->
+{{ mytext|markdownify }} <!-- Uses your default settings -->
+
+<!-- page2.html -->
+{{ mytext|markdownify:"alternative" }} <!-- Uses your alternative settings -->
+```
+
 ## Documentation
 Read the full documentation on [Read the docs](https://django-markdownify.readthedocs.io/en/latest/).
 
