@@ -49,5 +49,4 @@ For example::
       }
    }
 
-Read the full documentation on `Read the docs <https://django-markdownify.readthedocs.io/en/latest/>`_
 The code can be found on `Github <https://github.com/erwinmatijsen/django-markdownify>`_.
