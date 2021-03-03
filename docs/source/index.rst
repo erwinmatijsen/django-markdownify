@@ -31,5 +31,23 @@ Is transformed to::
     Some <em>test</em> <a href="#">link</a>
   </p>
 
+The filter is a wrapper around `Markdown <https://pypi.python.org/pypi/Markdown>`_ and
+`Bleach <http://pythonhosted.org/bleach/index.html>`_ and as such supports their settings. It is possible to define multiple settings for multiple usecases.
 
-The code can be found on `github <https://github.com/erwinmatijsen/django-markdownify>`_.
+For example::
+
+   # settings.py
+
+   MARKDOWNIFY = {
+      "default": {
+         "WHITELIST_TAGS": ["a", "p", "h1'", ]
+      },
+
+      "alternative": {
+         "WHITELIST_TAGS": ["a", "p", ],
+         "MARKDOWN_EXTENSIONS": ["markdown.extensions.fenced_code", ]
+      }
+   }
+
+Read the full documentation on `Read the docs <https://django-markdownify.readthedocs.io/en/latest/>`_
+The code can be found on `Github <https://github.com/erwinmatijsen/django-markdownify>`_.

@@ -39,7 +39,7 @@ Is transformed to:
 </p>
 ```
 ## Documentation
-Read the full documentation on [Read the docs](http://django-markdownify.readthedocs.io/en/latest/).
+Read the full documentation on [Read the docs](https://django-markdownify.readthedocs.io/en/latest/).
 
 ## Credits
 
