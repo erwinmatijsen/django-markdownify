@@ -40,7 +40,7 @@ For example::
 
    MARKDOWNIFY = {
       "default": {
-         "WHITELIST_TAGS": ["a", "p", "h1'", ]
+         "WHITELIST_TAGS": ["a", "p", "h1", ]
       },
 
       "alternative": {
