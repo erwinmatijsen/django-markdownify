@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-markdownify',
-    version='0.9.0',
+    version='0.9.1',
     packages=['markdownify'],
     package_dir={'markdownify': 'markdownify'},
     package_data={'markdownify': ['tests/*.md']},
