@@ -21,7 +21,7 @@ def legacy():
     # Bleach settings
     whitelist_tags = getattr(settings, 'MARKDOWNIFY_WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
     whitelist_attrs = getattr(settings, 'MARKDOWNIFY_WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
-    whitelist_styles = getattr(settings, 'MARKDOWNIFY_WHITELIST_STYLES', bleach.sanitizer.ALLOWED_STYLES)
+    whitelist_styles = getattr(settings, 'MARKDOWNIFY_WHITELIST_STYLES', bleach.css_sanitizer.ALLOWED_CSS_PROPERTIES)
     whitelist_protocols = getattr(settings, 'MARKDOWNIFY_WHITELIST_PROTOCOLS', bleach.sanitizer.ALLOWED_PROTOCOLS)
 
     # Markdown settings
@@ -83,7 +83,7 @@ def markdownify(text, custom_settings="default"):
     # Bleach settings
     whitelist_tags = markdownify_settings.get('WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
     whitelist_attrs = markdownify_settings.get('WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
-    whitelist_styles = markdownify_settings.get('WHITELIST_STYLES', bleach.sanitizer.ALLOWED_STYLES)
+    whitelist_styles = markdownify_settings.get('WHITELIST_STYLES', bleach.css_sanitizer.ALLOWED_CSS_PROPERTIES)
     whitelist_protocols = markdownify_settings.get('WHITELIST_PROTOCOLS', bleach.sanitizer.ALLOWED_PROTOCOLS)
 
     # Markdown settings
@@ -110,9 +110,10 @@ def markdownify(text, custom_settings="default"):
 
     # Sanitize html if wanted
     if markdownify_settings.get("BLEACH", True):
+        css_sanitizer = bleach.css_sanitizer.CSSSanitizer(allowed_css_properties=whitelist_styles)
         cleaner = bleach.Cleaner(tags=whitelist_tags,
                                  attributes=whitelist_attrs,
-                                 styles=whitelist_styles,
+                                 css_sanitizer=css_sanitizer,
                                  protocols=whitelist_protocols,
                                  strip=strip,
                                  filters=linkify,
