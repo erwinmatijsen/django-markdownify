@@ -11,7 +11,7 @@ This is list two:
   1. Item 1
   2. Item 2
   
-<p style="color: red; font-weight:900; border:1px solid blue;">This paragraph has some inline styling.</p>
+<p style="color: red; font-weight: 900; border: 1px solid blue;">This paragraph has some inline styling.</p>
 
 In this paragraph, protocols are being tested. 
 [http-link](http://httplink.com), 

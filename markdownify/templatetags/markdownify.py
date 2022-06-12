@@ -2,6 +2,7 @@ import warnings
 
 from functools import partial
 
+from bleach.css_sanitizer import ALLOWED_CSS_PROPERTIES
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe

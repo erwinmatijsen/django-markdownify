@@ -188,6 +188,7 @@ class MarkdownifyOldSettingsTestCase(SimpleTestCase):
             markup and attributes.</p>
             <p><a href="https://bleach.readthedocs.io/en/latest/index.html">Website</a></p>
             """
+
         self.assertHTMLEqual(output, expected_output)
 
     @override_settings()
@@ -432,12 +433,6 @@ class MarkdownifyTestCase(SimpleTestCase):
         <p>Like this blockquote.</p>
         <p>This <a href="#">link</a> has a target.</p>
         """
-
-        print("OUTPUT")
-        print(output)
-
-        print("EXPECTED")
-        print(expected_output)
 
         self.assertHTMLEqual(output, expected_output)
 
