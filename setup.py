@@ -30,6 +30,6 @@ setup(
     install_requires=[
         'Django',
         'markdown',
-        'bleach[css]',
+        'bleach[css] >= 5.0.0',
     ],
 )
