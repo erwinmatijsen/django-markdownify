@@ -4,7 +4,7 @@ Settings
 You can change the behavior of Markdownify by adding them to your ``settings.py``. All settings are optional and will
 fall back to default behavior if not specified.
 
-.. warning:: The settings described here are for version 1 and up. The old style settings are deprecated and will be removed in the next release. For reference, you can find the deprecated settings here: :ref:`oldsettings`
+.. warning:: The settings described here are for version 0.9 and up. The old style settings are deprecated and will be removed in an upcoming release. For reference, you can find the deprecated settings here: :ref:`oldsettings`
 
 Setup
 -----
@@ -81,7 +81,7 @@ For example::
 
 Whitelist styles
 ----------------
-Add whitelisted styles with the ``MARKDOWNIFY_WHITELIST_STYLES`` key and a list of styles as the value.
+Add whitelisted styles with the ``WHITELIST_STYLES`` key and a list of styles as the value.
 For example::
 
     MARKDOWNIFY = {
@@ -93,7 +93,7 @@ For example::
         }
     }
 
-``WHITELIST_STYLES`` defaults to `bleach.sanitizer.ALLOWED_STYLES <https://bleach.readthedocs.io/en/latest/clean.html#allowed-styles-styles>`_ (Note that it's an empty list)
+``WHITELIST_STYLES`` defaults to `bleach.css_sanitizer.ALLOWED_CSS_PROPERTIES <https://bleach.readthedocs.io/en/latest/clean.html#sanitizing-css>`_
 
 Whitelist protocols
 -------------------

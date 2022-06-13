@@ -7,7 +7,7 @@ Installation and usage
 Requirements
 ------------
 Django Markdownify requires `Django <https://www.djangoproject.com/>`_ (obviously), as well as `Markdown <https://pypi.python.org/pypi/Markdown>`_ and
-`Bleach <http://pythonhosted.org/bleach/index.html>`_ version 2 or higher. When installing Django Markdownify,
+`Bleach <http://pythonhosted.org/bleach/index.html>`_ version 5 or higher. When installing Django Markdownify,
 dependencies will be installed automatically.
 
 
