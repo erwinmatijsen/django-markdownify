@@ -449,7 +449,7 @@ class MarkdownifyTestCase(SimpleTestCase):
         # Set default settings, and tags
         settings.MARKDOWNIFY = {
             "default": {
-                "WHITELIST_TAGS":['p', 'pre', ],  # Some defaults
+                "WHITELIST_TAGS": ['p', 'pre', ],  # Some defaults
                 "MARKDOWN_EXTENSIONS": ['markdown.extensions.fenced_code', ]  # Enable an included extension
             }
         }
@@ -475,6 +475,46 @@ class MarkdownifyTestCase(SimpleTestCase):
                     ~~~~~~~~~~~~~~~~~~~~</p>
                     """
 
+        self.assertHTMLEqual(output, expected_output)
+
+    @override_settings()
+    def test_extension_configs(self):
+        """
+        Test if configs for extensions are working
+        """
+
+        # Delete settings
+        self.remove_old_style_settings()
+        del settings.MARKDOWNIFY
+
+        # Set default settings, and tags
+        settings.MARKDOWNIFY = {
+            "default": {
+                "WHITELIST_TAGS": ['p', 'pre', 'code'],
+                "WHITELIST_ATTRS": ['class', ],
+                "MARKDOWN_EXTENSIONS": ['fenced_code', ],  # Enable an included extension
+                "MARKDOWN_EXTENSION_CONFIGS": {
+                    "fenced_code": {
+                        "lang_prefix": "test-"  # Change default setting from 'language-' to 'test-'
+                    }
+                }
+            }
+        }
+
+        output = markdownify(self.input_text_extensions)
+        expected_output = """
+            <p>Fenced code:</p>
+            <pre><code class="test-python">def test(y): print(y)</code></pre>
+            """
+        self.assertHTMLEqual(output, expected_output)
+
+        # Revert setting
+        del settings.MARKDOWNIFY["default"]["MARKDOWN_EXTENSION_CONFIGS"]
+        output = markdownify(self.input_text_extensions)
+        expected_output = """
+            <p>Fenced code:</p>
+            <pre><code class="language-python">def test(y): print(y)</code></pre>
+            """
         self.assertHTMLEqual(output, expected_output)
 
     @override_settings()

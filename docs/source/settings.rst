@@ -121,15 +121,31 @@ For example::
     MARKDOWNIFY = {
         "default": {
             "MARKDOWN_EXTENSIONS": [
-                'markdown.extensions.fenced_code',
-                'markdown.extensions.extra',
+                "markdown.extensions.fenced_code', // dotted path
+                "fenced_code',  // also works
             ]
         }
     }
 
+To pass configuration options to the extensions, define a ``MARKDOWN_EXTENSION_CONFIGS`` key in your settings.
+For example::
+
+    MARKDOWNIFY = {
+        "default": {
+            "MARKDOWN_EXTENSION_CONFIGS": {
+                "fenced_code": {
+                    "lang_prefix": "example-"
+                }
+            }
+        }
+    }
+
+NB: It is import to use the same name in the extensions list and the configuration dict. So use ``fenced_code`` in
+both places, or use ``markdown.extensions.extra.fenced_code`` in both places, but don't mix them.
+
 ``MARKDOWN_EXTENSIONS`` defaults to an empty list (so no extensions are used).
 To read more about extensions and see the list of official supported extensions,
-go to `the markdown documentation <https://python-markdown.github.io/extensions/>`_.
+and how to configure them, go to `the markdown documentation <https://python-markdown.github.io/extensions/>`_.
 
 
 Strip markup
