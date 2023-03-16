@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-markdownify',
-    version='0.9.2',
+    version='0.9.3',
     packages=['markdownify'],
     package_dir={'markdownify': 'markdownify'},
     package_data={'markdownify': ['tests/*.md']},
@@ -18,7 +18,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     url='https://github.com/erwinmatijsen/django-markdownify',
-    download_url='https://github.com/erwinmatijsen/django-markdownify/archive/0.9.0.tar.gz',
+    download_url='https://github.com/erwinmatijsen/django-markdownify/archive/0.9.3.tar.gz',
     author='Erwin Matijsen, R Moelker',
     author_email='erwin@erwinmatijsen.nl',
     classifiers=[

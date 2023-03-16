@@ -90,6 +90,7 @@ def markdownify(text, custom_settings="default"):
     # Markdown settings
     strip = markdownify_settings.get('STRIP', True)
     extensions = markdownify_settings.get('MARKDOWN_EXTENSIONS', [])
+    extension_configs = markdownify_settings.get('MARKDOWN_EXTENSION_CONFIGS', {})
 
     # Bleach Linkify
     linkify = None
@@ -107,7 +108,7 @@ def markdownify(text, custom_settings="default"):
                            )]
 
     # Convert markdown to html
-    html = markdown.markdown(text or "", extensions=extensions)
+    html = markdown.markdown(text or "", extensions=extensions, extension_configs=extension_configs)
 
     # Sanitize html if wanted
     if markdownify_settings.get("BLEACH", True):
