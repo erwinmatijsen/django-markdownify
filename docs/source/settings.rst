@@ -121,8 +121,8 @@ For example::
     MARKDOWNIFY = {
         "default": {
             "MARKDOWN_EXTENSIONS": [
-                "markdown.extensions.fenced_code', // dotted path
-                "fenced_code',  // also works
+                "markdown.extensions.fenced_code", # dotted path
+                "fenced_code",  # also works
             ]
         }
     }
