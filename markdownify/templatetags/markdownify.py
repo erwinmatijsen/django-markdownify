@@ -124,3 +124,36 @@ def markdownify(text, custom_settings="default"):
         html = cleaner.clean(html)
 
     return mark_safe(html)
+
+
+def do_markdownify(parser, token):
+    # Set up the nodelist and parse till we hit the endmarkdownify block
+    nodelist = parser.parse(("endmarkdownify",))
+    parser.delete_first_token()
+
+    # Get the settings from the tag
+    try:
+        markdownify_settings = token.split_contents()[1]
+    except IndexError:
+        markdownify_settings = "default"
+
+    return MarkDownifyNode(nodelist, markdownify_settings)
+
+
+class MarkDownifyNode(template.Node):
+    def __init__(self, nodelist, markdownify_settings):
+        self.nodelist = nodelist
+        self.markdownify_settings = markdownify_settings
+
+    def render(self, context):
+
+        # Build new nodelist with rendered and markdownified nodes
+        node_list = []
+        for node in self.nodelist:
+            md_node = markdownify(node.render(context), custom_settings=self.markdownify_settings)
+            node_list.append(md_node)
+
+        return "".join(node_list)
+
+
+register.tag("markdownify", do_markdownify)
