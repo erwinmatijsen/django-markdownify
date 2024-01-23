@@ -1,12 +1,12 @@
 .. _oldsettings:
 
-Settings (Deprecated)
+Settings (Prior to 0.9.0)
 =====================
 
+.. warning:: The settings described here are for version 0.9 and down. The old style settings are removed since version 0.9.4. For reference, you can find the deprecated settings here: :ref:`oldsettings`
 
 You can change the behavior of Markdownify by adding them to your ``settings.py``. All settings are optional and will
 fall back to default behavior if not specified.
-
 
 
 Whitelist tags

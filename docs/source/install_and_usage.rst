@@ -72,3 +72,23 @@ It is possible to have different settings for different use cases, for example::
     {{ markdowntext|markdownify:"restricted" }} <!-- uses the 'restricted' settings -->
 
 See :doc:`settings` for a more detailed explanation.
+
+An alternative way to use Markdownify is to put your text between the ``{% markdownify %}`` and ``{% endmmarkdownify %}`` tags::
+
+  {% load markdownify %}
+
+  {% markdownify %}Some *test* [link](#){% endmarkdownify %}
+
+This is useful if you are using Markdownify on a other templatetag for example::
+
+    {% load markdownify my_custom_template_tag %}
+
+    {% markdownify %}
+        {% mytemplatetag %}
+    {% endmarkdownify %}
+
+You can pass in the alternative settings as a parameter to the ``markdownify`` tag::
+
+    {% load markdownify %}
+
+    {% markdownify "restricted" %}Some *test* [link](#){% endmarkdownify %}

@@ -14,72 +14,13 @@ import bleach
 register = template.Library()
 
 
-def legacy():
-    """
-    Function used to transform old style settings to new style settings
-    """
-
-    # Bleach settings
-    whitelist_tags = getattr(settings, 'MARKDOWNIFY_WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
-    whitelist_attrs = getattr(settings, 'MARKDOWNIFY_WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
-    whitelist_styles = getattr(settings, 'MARKDOWNIFY_WHITELIST_STYLES', bleach.css_sanitizer.ALLOWED_CSS_PROPERTIES)
-    whitelist_protocols = getattr(settings, 'MARKDOWNIFY_WHITELIST_PROTOCOLS', bleach.sanitizer.ALLOWED_PROTOCOLS)
-
-    # Markdown settings
-    strip = getattr(settings, 'MARKDOWNIFY_STRIP', True)
-    extensions = getattr(settings, 'MARKDOWNIFY_MARKDOWN_EXTENSIONS', [])
-
-    # Bleach Linkify
-    values = {}
-    linkify_text = getattr(settings, 'MARKDOWNIFY_LINKIFY_TEXT', True)
-
-    if linkify_text:
-        values = {
-            "PARSE_URLS": True,
-            "PARSE_EMAIL": getattr(settings, 'MARKDOWNIFY_LINKIFY_PARSE_EMAIL', False),
-            "CALLBACKS": getattr(settings, 'MARKDOWNIFY_LINKIFY_CALLBACKS', None),
-            "SKIP_TAGS": getattr(settings, 'MARKDOWNIFY_LINKIFY_SKIP_TAGS', None)
-        }
-
-    return {
-        "STRIP": strip,
-        "MARKDOWN_EXTENSIONS": extensions,
-        "WHITELIST_TAGS": whitelist_tags,
-        "WHITELIST_ATTRS": whitelist_attrs,
-        "WHITELIST_STYLES": whitelist_styles,
-        "WHITELIST_PROTOCOLS": whitelist_protocols,
-        "LINKIFY_TEXT": values,
-        "BLEACH": getattr(settings, 'MARKDOWNIFY_BLEACH', True)
-    }
-
-
 @register.filter
 def markdownify(text, custom_settings="default"):
 
-    # Check for legacy settings
-    setting_keys = [
-        'WHITELIST_TAGS',
-        'WHITELIST_ATTRS',
-        'WHITELIST_STYLES',
-        'WHITELIST_PROTOCOLS',
-        'STRIP',
-        'MARKDOWN_EXTENSIONS',
-        'LINKIFY_TEXT',
-        'BLEACH',
-    ]
-    has_settings_old_style = False
-    for key in setting_keys:
-        if getattr(settings, f"MARKDOWNIFY_{key}", None):
-            has_settings_old_style = True
-            break
-
-    if has_settings_old_style:
-        markdownify_settings = legacy()
-    else:
-        try:
-            markdownify_settings = settings.MARKDOWNIFY[custom_settings]
-        except (AttributeError, KeyError):
-            markdownify_settings = {}
+    try:
+        markdownify_settings = settings.MARKDOWNIFY[custom_settings]
+    except (AttributeError, KeyError):
+        markdownify_settings = {}
 
     # Bleach settings
     whitelist_tags = markdownify_settings.get('WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
