@@ -2,8 +2,8 @@
 
 ![PyPi Downloads](https://img.shields.io/pypi/dm/django-markdownify) 
 ![License](https://img.shields.io/pypi/l/django-markdownify?color=brightgreen)
+[![Documentation Status](https://readthedocs.org/projects/django-markdownify/badge/?version=latest)](https://django-markdownify.readthedocs.io/en/latest/?badge=latest)
 ![Version](https://img.shields.io/pypi/v/django-markdownify)
-
 
 Django Markdownify is a template filter to convert Markdown to HTML in Django. Markdown is converted to HTML and sanitized.
 
