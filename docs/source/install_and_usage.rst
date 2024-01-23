@@ -79,12 +79,12 @@ An alternative way to use Markdownify is to put your text between the ``{% markd
 
   {% markdownify %}Some *test* [link](#){% endmarkdownify %}
 
-This is useful if you are using Markdownify on a other templatetag for example::
+This is useful if you are using Markdownify on another templatetag for example::
 
     {% load markdownify my_custom_template_tag %}
 
     {% markdownify %}
-        {% mytemplatetag %}
+        {% my_custom_template_tag %}
     {% endmarkdownify %}
 
 You can pass in the alternative settings as a parameter to the ``markdownify`` tag::
