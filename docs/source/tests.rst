@@ -6,6 +6,6 @@ To run the tests, make sure Django Markdownify is :ref:`installed <install>`. Th
 Django Markdownify is installed, and run the tests.
 
   .. highlight:: bash
+
   >>> cd /path/to/your/project
   >>> python manage.py test markdownify
-
