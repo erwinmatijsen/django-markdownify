@@ -166,7 +166,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'Markdownify', 'Markdownify Documentation',
-     author, 'Markdownify', 'One line description of project.',
+     author, 'Markdownify', 'A Django Markdown filter.',
      'Miscellaneous'),
 ]
 

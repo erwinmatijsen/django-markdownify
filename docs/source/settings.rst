@@ -142,8 +142,36 @@ For example::
         }
     }
 
-NB: It is import to use the same name in the extensions list and the configuration dict. So use ``fenced_code`` in
+NB: It is important to use the same name in the extensions list and the configuration dict. So use ``fenced_code`` in
 both places, or use ``markdown.extensions.extra.fenced_code`` in both places, but don't mix them.
+
+You can also use the imported class instead of the dotted path. This can be usefull if you want to alter the behavior of the extension. For example, to make the fenced_code extension use the pygments highlighter, you can do the following::
+
+    from pygments.formatters import HtmlFormatter
+    from markdown.extensions.codehilite import CodeHiliteExtension
+
+    class CustomHtmlFormatter(HtmlFormatter):
+        def __init__(self, lang_str='', **options):
+            super().__init__(**options)
+            # lang_str has the value {lang_prefix}{lang}
+            # specified by the CodeHilite's options
+            self.lang_str = lang_str
+
+        def _wrap_code(self, source):
+            yield 0, f'<code class="{self.lang_str}">'
+            yield from source
+            yield 0, '</code>'
+
+    MARKDOWNIFY = {
+        "default": {
+            "MARKDOWN_EXTENSIONS": [
+                "markdown.extensions.extra",  # Includes fenced_code
+                CodeHiliteExtension(pygments_formatter=CustomHtmlFormatter)
+            ],
+        }
+    }
+
+(NB: make sure to whitelist the ``class`` attribute and the ``pre``, ``code`` and ``span`` tags if you use this example)
 
 ``MARKDOWN_EXTENSIONS`` defaults to an empty list (so no extensions are used).
 To read more about extensions and see the list of official supported extensions,
