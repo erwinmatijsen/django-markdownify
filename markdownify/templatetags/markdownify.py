@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 
 import markdown
 import bleach
+from bleach import css_sanitizer as cs
 
 
 register = template.Library()
@@ -22,7 +23,7 @@ def markdownify(text, custom_settings="default"):
     # Bleach settings
     whitelist_tags = markdownify_settings.get('WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
     whitelist_attrs = markdownify_settings.get('WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
-    whitelist_styles = markdownify_settings.get('WHITELIST_STYLES', bleach.css_sanitizer.ALLOWED_CSS_PROPERTIES)
+    whitelist_styles = markdownify_settings.get('WHITELIST_STYLES', cs.ALLOWED_CSS_PROPERTIES)
     whitelist_protocols = markdownify_settings.get('WHITELIST_PROTOCOLS', bleach.sanitizer.ALLOWED_PROTOCOLS)
 
     # Markdown settings
