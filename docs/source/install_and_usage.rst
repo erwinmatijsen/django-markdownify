@@ -32,10 +32,13 @@ Load the tag in your template:
 
 ``{% load markdownify %}``
 
-Then you can change markdown to html as follows:
+
+Basic usage
+^^^^^^^^^^^
+
+Now you can change markdown to html as follows:
 
 ``{{ 'text'|markdownify }}``
-
 
 Use Markdown in your template directly::
 
@@ -61,7 +64,8 @@ Or use the filter on a variable passed to the template via your views. For examp
   {% load markdownify %}
   {{ markdowntext|markdownify }}
 
-You probably want to add some extra allowed tags and attributes in the :doc:`settings`, because the defaults are rather sparse.
+You probably want to add some extra allowed tags and attributes in the :doc:`settings`,
+because the defaults are rather sparse.
 
 It is possible to have different settings for different use cases, for example::
 
@@ -73,22 +77,53 @@ It is possible to have different settings for different use cases, for example::
 
 See :doc:`settings` for a more detailed explanation.
 
-An alternative way to use Markdownify is to put your text between the ``{% markdownify %}`` and ``{% endmmarkdownify %}`` tags::
+Usage with tags
+^^^^^^^^^^^^^^^
+
+Alternatively you can put your text between the
+``{% markdownify %}`` and ``{% endmmarkdownify %}`` tags::
 
   {% load markdownify %}
 
-  {% markdownify %}Some *test* [link](#){% endmarkdownify %}
+  {% markdownify %}
+  Some *test* [link](#)
+  {% endmarkdownify %}
 
 This is useful if you are using Markdownify on another templatetag for example::
 
     {% load markdownify my_custom_template_tag %}
 
     {% markdownify %}
-        {% my_custom_template_tag %}
+    {% my_custom_template_tag %}
     {% endmarkdownify %}
 
 You can pass in the alternative settings as a parameter to the ``markdownify`` tag::
 
     {% load markdownify %}
 
-    {% markdownify "restricted" %}Some *test* [link](#){% endmarkdownify %}
+    {% markdownify "restricted" %}
+    Some *test* [link](#)
+    {% endmarkdownify %}
+
+Usage with filter
+^^^^^^^^^^^^^^^^^
+
+A third way is to use the ``filter`` tag::
+
+    {% load markdownify %}
+
+    {% filter markdownify %}
+    [my link](https://{{domain}}.com)
+    {% endfilter %}
+
+This way, you can use dynamic content in your Markdown.
+
+You can pass in the alternative settings as follows::
+
+    {% filter markdownify:"restricted" %}
+
+
+Settings
+^^^^^^^^
+
+To read about all the different configuration options, see :doc:`settings`.
