@@ -2,6 +2,7 @@
 .cache
 .venv
 .idea
+.ropeproject
 
 # Ignore Pypi stuff
 dist

@@ -280,6 +280,9 @@ class MarkdownifyTestCase(SimpleTestCase):
             "default": {
                 "WHITELIST_TAGS": ['h1', 'p', 'a', ],
                 "WHITELIST_ATTRS": ['href', ],
+                "LINKIFY_TEXT": {
+                    "PARSE_URLS": True,
+                }
             }
         }
 
