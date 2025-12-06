@@ -21,6 +21,7 @@ setup(
     download_url='https://github.com/erwinmatijsen/django-markdownify/archive/0.9.6.tar.gz',
     author='Erwin Matijsen, R Moelker',
     author_email='erwin@erwinmatijsen.nl',
+    python_requires=">=3.7",
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
@@ -31,6 +32,5 @@ setup(
         'Django',
         'markdown',
         'bleach[css] >= 6.0.0',
-        'python_requires=">=3.7"',
     ],
 )
