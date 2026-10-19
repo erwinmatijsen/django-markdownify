@@ -1,12 +1,14 @@
-from functools import partial
+from collections.abc import Iterable
+import re
 
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
 import markdown
-import bleach
-from bleach import css_sanitizer as cs
+from justhtml import JustHTML, Linkify, SanitizationPolicy
+
+from markdownify import bleach_compat
 
 
 register = template.Library()
@@ -21,47 +23,60 @@ def markdownify(text, custom_settings="default"):
         markdownify_settings = {}
 
     # Bleach settings
-    whitelist_tags = markdownify_settings.get('WHITELIST_TAGS', bleach.sanitizer.ALLOWED_TAGS)
-    whitelist_attrs = markdownify_settings.get('WHITELIST_ATTRS', bleach.sanitizer.ALLOWED_ATTRIBUTES)
-    whitelist_styles = markdownify_settings.get('WHITELIST_STYLES', cs.ALLOWED_CSS_PROPERTIES)
-    whitelist_protocols = markdownify_settings.get('WHITELIST_PROTOCOLS', bleach.sanitizer.ALLOWED_PROTOCOLS)
+    whitelist_tags = markdownify_settings.get('WHITELIST_TAGS', bleach_compat.BLEACH_DEFAULT_TAGS)
+    whitelist_attrs = markdownify_settings.get('WHITELIST_ATTRS', bleach_compat.BLEACH_DEFAULT_ATTRIBUTES)
+    whitelist_styles = markdownify_settings.get('WHITELIST_STYLES', bleach_compat.BLEACH_DEFAULT_CSS_PROPERTIES)
+    whitelist_protocols = markdownify_settings.get('WHITELIST_PROTOCOLS', bleach_compat.BLEACH_DEFAULT_PROTOCOLS)
 
     # Markdown settings
     strip = markdownify_settings.get('STRIP', True)
     extensions = markdownify_settings.get('MARKDOWN_EXTENSIONS', [])
     extension_configs = markdownify_settings.get('MARKDOWN_EXTENSION_CONFIGS', {})
 
-    # Bleach Linkify
-    linkify = None
+    # Linkify
     linkify_text = markdownify_settings.get('LINKIFY_TEXT', {"PARSE_URLS": True})
+    transforms = []
     if linkify_text.get("PARSE_URLS"):
-        linkify_parse_email = linkify_text.get('PARSE_EMAIL', False)
-        linkify_callbacks = linkify_text.get('CALLBACKS', [])
-        linkify_skip_tags = linkify_text.get('SKIP_TAGS', [])
-        linkifyfilter = bleach.linkifier.LinkifyFilter
-
-        linkify = [partial(linkifyfilter,
-                           callbacks=linkify_callbacks,
-                           skip_tags=linkify_skip_tags,
-                           parse_email=linkify_parse_email
-                           )]
+        transforms.append(Linkify(skip_tags=linkify_text.get('SKIP_TAGS', [])))
+    else:
+        transforms.append(Linkify(enabled=False))
+    transforms.extend(linkify_text.get('TRANSFORMS', []))
 
     # Convert markdown to html
     html = markdown.markdown(text or "", extensions=extensions, extension_configs=extension_configs)
 
     # Sanitize html if wanted
+    sanitization_kwargs = {
+        "sanitize": True,
+        "policy": None,
+    }
     if markdownify_settings.get("BLEACH", True):
-        css_sanitizer = bleach.css_sanitizer.CSSSanitizer(allowed_css_properties=whitelist_styles)
-        cleaner = bleach.Cleaner(tags=whitelist_tags,
-                                 attributes=whitelist_attrs,
-                                 css_sanitizer=css_sanitizer,
-                                 protocols=whitelist_protocols,
-                                 strip=strip,
-                                 filters=linkify,
-                                 )
-
-        html = cleaner.clean(html)
-
+        if isinstance(whitelist_attrs, dict):
+            attrs = {tag: set(values) for tag, values in whitelist_attrs.items()}
+        elif isinstance(whitelist_attrs, Iterable):
+            attrs = {"*": set(whitelist_attrs)}
+        elif callable(whitelist_attrs):
+            raise TypeError("Using a callback for filtering attributes is not supported by JustHTML.")
+        else:
+            raise TypeError(type(whitelist_attrs))
+        if strip:
+            disallowed_tag_handling = "unwrap"
+        else:
+            disallowed_tag_handling = "escape"
+            # Bleach defaults to strip_comments=True. If you use escape mode
+            # (`strip=False`) and still want comments removed rather than displayed,
+            # remove comments before parsing.
+            html = re.sub(r"<!--.*?-->", "", html, flags=re.DOTALL)
+        sanitization_kwargs["policy"] = SanitizationPolicy(
+            allowed_tags=whitelist_tags,
+            allowed_attributes=attrs,
+            allowed_css_properties=whitelist_styles,
+            url_policy=bleach_compat.build_url_policy(whitelist_tags, attrs, whitelist_protocols),
+            disallowed_tag_handling=disallowed_tag_handling,
+        )
+    else:
+        sanitization_kwargs["sanitize"] = False
+    html = JustHTML(html, fragment=True, transforms=transforms, **sanitization_kwargs).to_html(pretty=False)
     return mark_safe(html)
 
 
