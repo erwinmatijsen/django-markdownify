@@ -1,3 +1,30 @@
+[project]
+name = "django-markdownify"
+version = "0.9.7"
+authors = [
+	{ name="Erwin Matijsen", email="erwin@erwinmatijsen.nl" },
+	{ name="Ruurd Moelker" },
+]
+license = "MIT"
+description = "Markdown template filter for Django."
+readme = "README.md"
+requires-python=">=3.7"
+dependencies = [
+	"Django",
+	"markdown",
+	"bleach[css] >= 6.0.0",
+]
+classifiers=[
+	"Environment :: Web Environment",
+	"Framework :: Django",
+	"Intended Audience :: Developers",
+	"Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://github.com/erwinmatijsen/django-markdownify"
+download = "https://github.com/erwinmatijsen/django-markdownify/archive/0.9.7.tar.gz"
+
 [build-system]
 requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
