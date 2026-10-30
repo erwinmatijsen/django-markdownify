@@ -1,2 +1,3 @@
 include LICENSE README.md
-recursive-include markdownify *.py
+recursive-include markdownify *.py *.md
+graft docs
